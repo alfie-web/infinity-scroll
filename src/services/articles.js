@@ -8,7 +8,7 @@ class ArticlesService {
       title: new RegExp(search, 'i'),
       tags: new RegExp(tag, 'i')
     }
-    const skip = ((+page - 1) * +limit) + ArticleService.skipOffset
+    const skip = ((+page - 1) * +limit) + ArticlesService.skipOffset
 
     const total = await ArticleModel.countDocuments(query)
     const isLastPage = skip + limit >= total;
@@ -19,7 +19,7 @@ class ArticlesService {
       .skip(skip)
       .limit(limit)
 
-    ArticleService.skipOffset = 0
+    ArticlesService.skipOffset = 0
 
     return {
       articles,
@@ -32,7 +32,7 @@ class ArticlesService {
     const article = new ArticleModel(data)
     await article.save()
 
-    ArticleService.skipOffset += 1;	// сдвиг увеличился
+    ArticlesService.skipOffset += 1;	// сдвиг увеличился
 
     return article
   }
