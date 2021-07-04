@@ -6,7 +6,7 @@ const articlesService = require('../services/articles')
 
 // TODO: Написать тесты на пагинацию и тд
 
-class ArticleController {
+class ArticlesController {
   getAll = async (req, res, next) => {
     const { page = 1, limit = 3, search = '', tag = '' } = req.query
 
@@ -54,7 +54,8 @@ class ArticleController {
   // }
 
   create = async (req, res, next) => {
-    validateRequest(req, next)
+    const errors = validateRequest(req)
+    if (errors) return next(createError(400, 'Не корректные данные', errors))
 
     try {
       const article = await articlesService.createArticle(req.body)
@@ -69,4 +70,4 @@ class ArticleController {
   }
 }
 
-module.exports = ArticleController
+module.exports = ArticlesController
