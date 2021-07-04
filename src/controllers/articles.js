@@ -1,34 +1,17 @@
 const createError = require('http-errors')
 
-// const { ArticleModel } = require('../models')
-const articleService = require('../services/article')
+const validateRequest = require('../helpers/validateRequest')
+
+const articlesService = require('../services/articles')
 
 // TODO: Написать тесты на пагинацию и тд
 
 class ArticleController {
-  // static skipOffset = 0 // ++ или -- сдвиг при создании или удалении нового итема соответственно
-
   getAll = async (req, res, next) => {
     const { page = 1, limit = 3, search = '', tag = '' } = req.query
 
     try {
-      // const query = {
-      //   title: new RegExp(search, 'i'),
-      //   tags: new RegExp(tag, 'i')
-      // }
-      // const skip = ((+page - 1) * +limit) + ArticleController.skipOffset
-
-      // const total = await ArticleModel.countDocuments(query)
-			// const isLastPage = skip + limit >= total;
-
-      // const articles = await ArticleModel
-      //   .find(query)
-      //   .sort({ createdAt: -1 })
-      //   .skip(skip)
-      //   .limit(limit)
-
-      // ArticleController.skipOffset = 0
-      const { articles, isLastPage, total } = await articleService.getArticles(page, limit, search, tag);
+      const { articles, isLastPage, total } = await articlesService.getArticles(page, limit, search, tag)
 
       res.json({
         docs: articles,
@@ -71,12 +54,10 @@ class ArticleController {
   // }
 
   create = async (req, res, next) => {
-    try {
-      // const article = new ArticleModel(req.body)
-      // await article.save()
+    validateRequest(req, next)
 
-      // ArticleController.skipOffset += 1;	// сдвиг увеличился
-      const article = await articleService.createArticle(req.body)
+    try {
+      const article = await articlesService.createArticle(req.body)
 
       res.json({
         data: article

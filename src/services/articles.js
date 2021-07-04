@@ -1,6 +1,6 @@
 const { ArticleModel } = require('../models')
 
-class ArticleService {
+class ArticlesService {
   static skipOffset = 0 // ++ или -- сдвиг при создании или удалении нового итема соответственно
 
   async getArticles(page, limit, search, tag) {
@@ -38,4 +38,4 @@ class ArticleService {
   }
 }
 
-module.exports = new ArticleService()
+module.exports = new ArticlesService()
